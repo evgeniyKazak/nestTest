@@ -1,0 +1,25 @@
+version: '2.4'
+
+services:
+  nest:
+    build:
+      context: docker/nest
+    volumes:
+      - ./src:/usr/src/app
+    command: npm run start
+    ports:
+      - 3000:3000
+    # tty: true
+
+  db:
+    image: mysql:8.0.30
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    restart: on-failure
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/log:/var/log/mysql
+
